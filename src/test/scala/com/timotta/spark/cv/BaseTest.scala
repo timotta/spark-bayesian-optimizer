@@ -32,4 +32,26 @@ abstract class BaseTest extends FlatSpec with BeforeAndAfter with MockitoSugar {
     val map = field.get(System.getenv()).asInstanceOf[util.Map[String, String]]
     map
   }
+
+  def ~=(x: Double, y: Double, precision: Double): Boolean = {
+    if ((x - y).abs < precision) true else false
+  }
+
+  def ~=(x: Array[Double], y: Array[Double], precision: Double): Boolean = {
+    x.zip(y).foreach {
+      case (a, b) =>
+        if (! ~=(a, b, 0.0001))
+          return false
+    }
+    true
+  }
+  
+  def ~=(x: Array[Array[Double]], y: Array[Array[Double]], precision: Double): Boolean = {
+    x.zip(y).foreach {
+      case (a, b) =>
+        if (! ~=(a, b, 0.0001))
+          return false
+    }
+    true
+  }
 }

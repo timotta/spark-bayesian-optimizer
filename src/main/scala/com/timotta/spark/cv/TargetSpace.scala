@@ -1,25 +1,28 @@
 package com.timotta.spark.cv
 
-import org.apache.spark.ml.BayesianPair
 import org.apache.spark.ml.param.{ParamMap, ParamPair}
+import org.apache.spark.ml.BayesianParam
+import scala.util.Random
+import scala.collection.mutable.MutableList
 
-class TargetSpace (bounds: Array[Array[BayesianPair[_]]], randomState:Int) {
+class TargetSpace(func: (Array[Double]) => Double, bounds: Array[(Double, Double)], random: Random) {
 
-  def randomSample(): ParamMap = {
-    println(bounds.apply(0).toSeq)
-    val values = bounds.apply(0).toSeq.map { p =>
-      p match {
-        case _:BayesianPair[Int] =>
-            p.asInstanceOf[BayesianPair[Int]].copy(value = 5)
-        case _:BayesianPair[Double] =>
-            p.asInstanceOf[BayesianPair[Double]].copy(value = 0.17203245)
-      }
+  private[cv] val xs = MutableList[Array[Double]]()
+  private[cv] val ys = MutableList[Double]()
 
+  def randomSample(): Array[Double] = {
+    bounds.map { case (a, b) => randomUniform(a, b) }
+  }
 
-    }
+  def probe(x: Array[Double]): Double = {
+    val y = func(x)
+    xs.+=(x)
+    ys.+=(y)
+    y
+  }
 
-    ParamMap(values:_*)
-//    null
+  private def randomUniform(start: Double, end: Double): Double = {
+    random.nextDouble() * (end - start) + start
   }
 
 }
