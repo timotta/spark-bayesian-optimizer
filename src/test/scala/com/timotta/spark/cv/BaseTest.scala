@@ -45,7 +45,7 @@ abstract class BaseTest extends FlatSpec with BeforeAndAfter with MockitoSugar {
     }
     true
   }
-  
+
   def ~=(x: Array[Array[Double]], y: Array[Array[Double]], precision: Double): Boolean = {
     x.zip(y).foreach {
       case (a, b) =>

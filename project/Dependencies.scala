@@ -9,7 +9,10 @@ object Dependencies {
     "org.apache.spark" %% "spark-mllib" % sparkVersion
   )
   val embeddedDependencies = Seq[ModuleID](
-
+      "org.scalanlp" %% "breeze" % "0.12",
+      "com.github.danielkorzekwa" %% "bayes-scala" % "0.6",
+      "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
+      "com.twitter" % "chill_2.11" % "0.8.0"
   )
   val testsDependencies = Seq[ModuleID](
     "org.scalatest" %% "scalatest" % "3.0.1",

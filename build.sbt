@@ -1,5 +1,5 @@
 import ReleaseTransformations._
-val compilerVersion = "2.11.12"
+val compilerVersion = "2.11.0"
 
 envVars in Test := Map("LC_ALL" -> "en_US.UTF-8")
 
