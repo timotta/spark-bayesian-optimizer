@@ -9,17 +9,17 @@ import org.apache.spark.mllib.clustering.KMeans
 import org.apache.spark.ml.regression.LinearRegression
 
 class BayesianOptimizerTest extends BaseTest with BeforeAndAfterAll {
-  
-  var spark:SparkSession = _ 
-    
+
+  var spark: SparkSession = _
+
   override def beforeAll() {
     spark = SparkSession.builder().master("local").appName("test").getOrCreate()
   }
-  
+
   override def afterAll() {
     spark.close()
   }
-  
+
   it should "write" in {
     val path = "/tmp/bayes_" + System.currentTimeMillis()
     val paramGrid = new ParamGridBuilder().build()
@@ -28,21 +28,19 @@ class BayesianOptimizerTest extends BaseTest with BeforeAndAfterAll {
       .setEvaluator(new BinaryClassificationEvaluator)
       .setEstimator(new LinearRegression)
     opt1.save(path)
-    assert( new File(path).exists() )
+    assert(new File(path).exists())
   }
-  
-//  it should "read and write" in {
-//    val path = "/tmp/bayes_" + System.currentTimeMillis()
-//    
-//    val opt1 = new BayesianOptimizer()
-//    opt1.save(path)
-//    
-//    val opt2 = BayesianOptimizer.load(path)
-//    
-//    println(opt1)
-//    println(opt2)
-//    
-//    assert(opt1.uid == opt2.uid)
-//  }
-  
+
+  it should "read and write" in {
+    val path = "/tmp/bayes_" + System.currentTimeMillis()
+    val paramGrid = new ParamGridBuilder().build()
+    val opt1 = new BayesianOptimizer()
+      .setEstimatorParamMaps(paramGrid)
+      .setEvaluator(new BinaryClassificationEvaluator)
+      .setEstimator(new LinearRegression)
+    opt1.save(path)
+    val opt2 = BayesianOptimizer.load(path)
+    assert(opt1.uid == opt2.uid)
+  }
+
 }
