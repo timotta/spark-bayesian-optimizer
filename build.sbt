@@ -7,13 +7,13 @@ val buildSettings = Seq(
   name := "spark-bayesian-optimizer",
   scalaVersion := compilerVersion,
   description := "Spark Bayesian Optimizer",
-  organization := "com.globo",
+  organization := "com.timotta",
   organizationName := "Globo.com",
   homepage := Some(url("http://www.globo.com")),
   resolvers := Resolvers.defaultResoulvers,
-  libraryDependencies ++= Dependencies.rootDependencies,
+  libraryDependencies ++= Dependencies.mainRunnerDependencies,
   javaOptions ++= Seq("-Xms512M", "-Xmx2048M", "-XX:MaxPermSize=2048M", "-XX:+CMSClassUnloadingEnabled"),
-  run in Compile := Defaults.runTask(fullClasspath in Compile, mainClass in(Compile, run), runner in(Compile, run)).evaluated,
+  //run in Compile := Defaults.runTask(fullClasspath in Compile, mainClass in(Compile, run), runner in(Compile, run)).evaluated,
   fork := true,
   parallelExecution in Test := false,
   scalaBinaryVersion in ThisBuild := "2.11",
@@ -46,3 +46,5 @@ lazy val mainRunner = project.in(file("mainRunner")).dependsOn(RootProject(file(
   javaOptions ++= Seq("-Xms512M", "-Xmx2048M", "-XX:MaxPermSize=2048M", "-XX:+CMSClassUnloadingEnabled"),
   parallelExecution in Test := false
 )
+
+mainClass in (Compile, run) := Some("com.timotta.spark.cv.Main")

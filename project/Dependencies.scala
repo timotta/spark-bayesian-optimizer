@@ -1,24 +1,25 @@
 import sbt._
+
 object Dependencies {
 
   val sparkVersion = "2.4.0"
 
-  val providedDependencies = Seq(
+  val providedDependencies = Seq[ModuleID](
     "org.apache.spark" %% "spark-core" % sparkVersion exclude("org.scalatest", "scalatest"),
-    "org.apache.spark" %% "spark-sql" % sparkVersion,
-    "org.apache.spark" %% "spark-yarn" % sparkVersion,
     "org.apache.spark" %% "spark-mllib" % sparkVersion
   )
-  val embeddedDependencies = Seq(
+  val embeddedDependencies = Seq[ModuleID](
+
   )
-  val testsDependencies = Seq(
+  val testsDependencies = Seq[ModuleID](
     "org.scalatest" %% "scalatest" % "3.0.1",
     "org.mockito" % "mockito-core" % "2.22.0",
     "org.apache.spark" %% "spark-hive" % s"${sparkVersion}"
   )
 
+  //TODO: not using it, verify in the future
   val rootDependencies = embeddedDependencies ++ providedDependencies.map(_ % Provided) ++ testsDependencies.map(_ % Test)
 
-  val mainRunnerDependencies = (embeddedDependencies ++ providedDependencies ++ testsDependencies).map(_ % Compile)
+  val mainRunnerDependencies = (providedDependencies ++ embeddedDependencies ++ testsDependencies).map(_ % Compile)
 
 }
