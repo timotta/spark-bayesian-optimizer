@@ -4,7 +4,7 @@ val compilerVersion = "2.11.12"
 envVars in Test := Map("LC_ALL" -> "en_US.UTF-8")
 
 val buildSettings = Seq(
-  name := "anonym-inference-train",
+  name := "spark-bayesian-optimizer",
   scalaVersion := compilerVersion,
   description := "Spark Bayesian Optimizer",
   organization := "com.globo",

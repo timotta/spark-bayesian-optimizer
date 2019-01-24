@@ -22,4 +22,4 @@ assemblyMergeStrategy in assembly := {
 
 }
 
-assemblyJarName in assembly := "anonym-inference-train.jar"
+assemblyJarName in assembly := "spark-bayesian-optimizer.jar"
