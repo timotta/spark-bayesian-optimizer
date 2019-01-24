@@ -14,7 +14,6 @@ object Dependencies {
   val testsDependencies = Seq(
     "org.scalatest" %% "scalatest" % "3.0.1",
     "org.mockito" % "mockito-core" % "2.22.0",
-    "com.holdenkarau" %% "spark-testing-base" % s"${sparkVersion}_0.10.0",
     "org.apache.spark" %% "spark-hive" % s"${sparkVersion}"
   )
 
