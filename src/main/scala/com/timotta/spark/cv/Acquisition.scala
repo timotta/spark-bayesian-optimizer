@@ -37,7 +37,7 @@ class Acquisition(bounds: Array[Array[Double]], kappa: Double = 2.576, random: U
 
   }
 
-  def maximize(gp: GaussianProcessModel, xSeed: Array[Double]) {
+  def maximize(gp: GaussianProcessModel, xSeed: Array[Double]) = {
     val (lower, upper) = boundsAsTuple
     val minimizer = new LBFGSB(DenseVector(lower), DenseVector(upper))
     val fn = new ApproximateGradientFunction(
