@@ -6,8 +6,8 @@ class GaussianProcessTest extends BaseTest {
 
   it should "fit and predict" in {
     val x = Array(
-      Array(1.0,2.0,3.0),
-      Array(4.0,5.0,6.0)
+      Array(1.0,2.0,3.0), // exemplo 1
+      Array(4.0,5.0,6.0) //exemplo 2
     )
 
     val y = Array(10.0, 1.0)
@@ -20,8 +20,8 @@ class GaussianProcessTest extends BaseTest {
 
     val expected =
       (
-        Array(9.957188795647246,1.2261371486885317, 6.122516131627145),
-        Array(0.17548642085394306, 0.17548642085388622, 13.01476953036775)
+        Array(9.957188795647246,1.2261371486885317, 6.122516131627145), // media
+        Array(0.17548642085394306, 0.17548642085388622, 13.01476953036775) //stde
 
         )
 

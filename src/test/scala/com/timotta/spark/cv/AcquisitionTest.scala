@@ -30,5 +30,22 @@ class AcquisitionTest extends BaseTest {
     
     assert( ~=(expected, result, 0.0001) )
   }
+  
+  it should "gpAndUcb" in {
+    val gp = new GaussianProcessModel(null) {
+       override def predict(v: Array[Array[Double]]) = {
+         (Array(v(0).sum), Array(0.001))
+       }
+    }
+    
+    val xTries = Array(Array(8D, 5D, 4D)) 
+    val result = new Acquisition(Array(
+      Array(2D, 9D),
+      Array(1D, 10D),
+      Array(3.9, 16D)
+    ), kappa=17).gpAndUcb(gp, xTries)
+    
+    assert( ~=(Array(17.017), result, 0.001) )
+  }
 
 }
