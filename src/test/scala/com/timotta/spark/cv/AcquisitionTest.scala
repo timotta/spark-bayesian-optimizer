@@ -98,5 +98,15 @@ class AcquisitionTest extends BaseTest {
     assert(~=(expected._1, result._1, 0.001))
     assert(~=(expected._2, result._2, 0.001))
   }
+  
+  it should "clip" in {
+    
+    val paramsTest = Array(10.0,12.0,1.0,5.0)
+    
+    println(new Acquisition(Array(Array(2.0,10.0),Array(2.0,10.0),Array(2.0,10.0),Array(2.0,10.0))).clip(paramsTest).toList)
+    
+  }
+  
+  
 
 }

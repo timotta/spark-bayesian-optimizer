@@ -7,7 +7,7 @@ import breeze.optimize.ApproximateGradientFunction
 
 class Acquisition(bounds: Array[Array[Double]], kappa: Double = 2.576, random: UniformRandom = new UniformRandom()) {
 
-  def max(gp: GaussianProcessModel, warmup: Int = 100000, iters: Int = 250) {
+  def max(gp: GaussianProcessModel, warmup: Int = 100000, iters: Int = 250) = {
     val xTries = randomTries(warmup)
 
     val ys = gpAndUcb(gp, xTries)
@@ -15,7 +15,7 @@ class Acquisition(bounds: Array[Array[Double]], kappa: Double = 2.576, random: U
     val (xMax, yMax) = xTries.zip(ys).sortBy(_._2).last
     val xSeeds = randomTries(iters)
 
-    val result = xSeeds.map { xSeed =>
+    val steps = xSeeds.map { xSeed =>
       val newX = maximize(gp, xSeed)
       val newY = gpAndUcb(gp, Array(newX))(0)
       if (newY >= yMax) {
@@ -24,10 +24,23 @@ class Acquisition(bounds: Array[Array[Double]], kappa: Double = 2.576, random: U
         None
       }
     }
-    maxResult(result, (xMax, yMax))
+    
+    val result = maxResult(steps, (xMax, yMax))
+ 
+    (clip(result._1), result._2)
   }
 
-  def maxResult(steps: Array[Option[(Array[Double], Double)]], default: (Array[Double], Double)): (Array[Double], Double) = {
+  def clip(result: Array[Double]) = {
+    val params = result.zip(bounds).map {
+        case (param, Array(lower, upper)) =>
+          if (param < lower) { lower }
+          else if (param > upper) { upper }
+          else { param }
+    }
+    params
+  }
+
+  def maxResult(steps: Array[Option[(Array[Double], Double)]], default: (Array[Double], Double)): (Array[Double], Double) = {F
     steps.collect { case Some(a) => a }
       .sortBy(_._2)
       .lastOption.getOrElse(default)
