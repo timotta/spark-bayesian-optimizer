@@ -46,7 +46,7 @@ class AcquisitionTest extends BaseTest {
 
     assert(~=(Array(17.017), result, 0.001))
   }
-  
+
   it should "maximize" in {
     val gp = new GaussianProcessModel(null) {
       override def predict(v: Array[Array[Double]]) = {
@@ -62,26 +62,41 @@ class AcquisitionTest extends BaseTest {
 
     val expected = Array(0.8870271969437802, 0.732216318166268, -1.6192485144144135)
 
-    assert( ~=(expected, result, 0.001) )
+    assert(~=(expected, result, 0.001))
   }
-  
+
   it should "maxResult" in {
     val steps = Array(
       Some((Array(1D, 2D), 9D)),
       Some((Array(3D, 4D), 10D)),
       None,
-      Some((Array(5D, 6D), 8D))
-    )
-    
-    val default = (Array(7D, 8D), 7D)
-   
-    val result = new Acquisition(null).maxResult(steps, default)
-    
-    val expected = (Array(3D, 4D), 10D)
-    
-    assert( ~=( expected._1, result._1, 0.001) )
-    assert( ~=( expected._2, result._2, 0.001) )
-  }
+      Some((Array(5D, 6D), 8D)))
 
+    val default = (Array(7D, 8D), 7D)
+
+    val result = new Acquisition(null).maxResult(steps, default)
+
+    val expected = (Array(3D, 4D), 10D)
+
+    assert(~=(expected._1, result._1, 0.001))
+    assert(~=(expected._2, result._2, 0.001))
+  }
+  
+  it should "maxResult when default bigger" in {
+    val steps = Array[Option[(Array[Double], Double)]](
+      None,
+      None,
+      None,
+      None)
+
+    val default = (Array(7D, 8D), 12D)
+
+    val result = new Acquisition(null).maxResult(steps, default)
+
+    val expected = (Array(7D, 8D), 12D)
+
+    assert(~=(expected._1, result._1, 0.001))
+    assert(~=(expected._2, result._2, 0.001))
+  }
 
 }
