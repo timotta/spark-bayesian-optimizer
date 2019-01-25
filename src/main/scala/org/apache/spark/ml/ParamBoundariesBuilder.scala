@@ -18,18 +18,13 @@ class ParamBoundariesBuilder() extends ParamGridBuilder {
     var lowerMap = new ParamMap()
     var upperMap = new ParamMap()
     boundariesGrid.foreach{
-      case (param:Param[Int], v:mutable.WrappedArray[Int] ) =>
-        println("INT")
-        println(param)
-        println(v)
+      case (param:IntParam, v:mutable.WrappedArray[Int] ) =>
+
         lowerMap.put(param,v.head)
 
-      case (param:Param[Double], v:mutable.WrappedArray[Double] ) =>
-        println("Doubel")
+      case (param:DoubleParam, v:mutable.WrappedArray[Double] ) =>
 
-        println(param)
-        println(v)
-      }
+    }
 
 
     Array(lowerMap,upperMap)
