@@ -5,10 +5,10 @@ object Dependencies {
   val sparkVersion = "2.4.0"
 
   val providedDependencies = Seq[ModuleID](
-    "org.apache.spark" %% "spark-core" % sparkVersion exclude("org.scalatest", "scalatest"),
-    "org.apache.spark" %% "spark-mllib" % sparkVersion
+    "org.apache.spark" %% "spark-core" % sparkVersion exclude("org.scalatest", "scalatest")
   )
   val embeddedDependencies = Seq[ModuleID](
+      "org.apache.spark" %% "spark-mllib" % sparkVersion,
       "org.scalanlp" %% "breeze" % "0.12",
       "com.github.danielkorzekwa" %% "bayes-scala" % "0.6",
       "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
@@ -20,7 +20,6 @@ object Dependencies {
     "org.apache.spark" %% "spark-hive" % s"${sparkVersion}"
   )
 
-  //TODO: not using it, verify in the future
   val rootDependencies = embeddedDependencies ++ providedDependencies.map(_ % Provided) ++ testsDependencies.map(_ % Test)
 
   val mainRunnerDependencies = (providedDependencies ++ embeddedDependencies ++ testsDependencies).map(_ % Compile)
