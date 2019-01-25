@@ -33,7 +33,7 @@ abstract class BaseTest extends FlatSpec with BeforeAndAfter with MockitoSugar {
     map
   }
 
-  def ~=(x: Double, y: Double, precision: Double): Boolean = {
+  def ~=(x: Double, y: Double, precision: Double = 0.0001): Boolean = {
     if ((x - y).abs < precision) true else false
   }
 

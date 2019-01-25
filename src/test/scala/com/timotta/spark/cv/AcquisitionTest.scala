@@ -64,6 +64,24 @@ class AcquisitionTest extends BaseTest {
 
     assert( ~=(expected, result, 0.001) )
   }
+  
+  it should "maxResult" in {
+    val steps = Array(
+      Some((Array(1D, 2D), 9D)),
+      Some((Array(3D, 4D), 10D)),
+      None,
+      Some((Array(5D, 6D), 8D))
+    )
+    
+    val default = (Array(7D, 8D), 7D)
+   
+    val result = new Acquisition(null).maxResult(steps, default)
+    
+    val expected = (Array(3D, 4D), 10D)
+    
+    assert( ~=( expected._1, result._1, 0.001) )
+    assert( ~=( expected._2, result._2, 0.001) )
+  }
 
 
 }

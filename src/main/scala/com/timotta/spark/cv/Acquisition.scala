@@ -15,26 +15,22 @@ class Acquisition(bounds: Array[Array[Double]], kappa: Double = 2.576, random: U
     val (xMax, yMax) = xTries.zip(ys).sortBy(_._2).last
     val xSeeds = randomTries(iters)
 
-    maximize(gp, xSeeds(0))
+    val result = xSeeds.map { xSeed =>
+      val newX = maximize(gp, xSeed)
+      val newY = gpAndUcb(gp, Array(newX))(0)
+      if (newY >= yMax) {
+        Some((newX, newY))
+      } else {
+        None
+      }
+    }
+    maxResult(result, (xMax, yMax))
+  }
 
-    """
-    for x_try in x_seeds:
-        # Find the minimum of minus the acquisition function
-        res = minimize(lambda x: -ac(x.reshape(1, -1), gp=gp, y_max=y_max),
-                       x_try.reshape(1, -1),
-                       bounds=bounds,
-                       method="L-BFGS-B")
-
-        # See if success
-        if not res.success:
-            continue
-
-        # Store it if better than previous minimum(maximum).
-        if max_acq is None or -res.fun[0] >= max_acq:
-            x_max = res.x
-            max_acq = -res.fun[0]
-"""
-
+  def maxResult(steps: Array[Option[(Array[Double], Double)]], default: (Array[Double], Double)): (Array[Double], Double) = {
+    steps.collect { case Some(a) => a }
+      .sortBy(_._2)
+      .lastOption.getOrElse(default)
   }
 
   def maximize(gp: GaussianProcessModel, xSeed: Array[Double]) = {
@@ -70,6 +66,5 @@ class Acquisition(bounds: Array[Array[Double]], kappa: Double = 2.576, random: U
         m + kappa * s
     }
   }
-
 
 }
