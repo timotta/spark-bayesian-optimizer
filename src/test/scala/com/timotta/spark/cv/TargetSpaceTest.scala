@@ -5,7 +5,7 @@ import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator
 import org.apache.spark.ml.param.{ParamMap, ParamPair}
 import org.apache.spark.ml.regression.LinearRegression
 import org.apache.spark.ml.tuning.ParamGridBuilder
-import org.apache.spark.ml.BayesianParam
+import org.apache.spark.ml.{BayesianParam, ParamBoundariesBuilder}
 import scala.util.Random
 
 class TargetSpaceTest extends BaseTest {
@@ -29,15 +29,19 @@ class TargetSpaceTest extends BaseTest {
   }
 
   it should "random sample" in {
-    val params = Array((1.0, 10.0), (0.1, 0.2))
-    val ts = new TargetSpace(null, params, new Random(1))
+    val estimator = new LinearRegression()
+
+    val bounds = new ParamBoundariesBuilder()
+      .addGrid(estimator.regParam, Array(0.1D,0.2D))
+      .addGrid(estimator.maxIter, Array(1,10))
+      .build()
+
+    val ts = new TargetSpace(null, bounds, new Random(1))
 
     val result = ts.randomSample()
-
-    val expected = Array(7.57790, 0.14100808)
+    val expected = Array(7.57790,0.14100808)
 
     assert(~=(result, expected, 0.0001))
-    
   }
 
 }
