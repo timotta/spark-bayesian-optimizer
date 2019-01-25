@@ -40,7 +40,7 @@ class Acquisition(bounds: Array[Array[Double]], kappa: Double = 2.576, random: U
     params
   }
 
-  def maxResult(steps: Array[Option[(Array[Double], Double)]], default: (Array[Double], Double)): (Array[Double], Double) = {F
+  def maxResult(steps: Array[Option[(Array[Double], Double)]], default: (Array[Double], Double)): (Array[Double], Double) = {
     steps.collect { case Some(a) => a }
       .sortBy(_._2)
       .lastOption.getOrElse(default)
